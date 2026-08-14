@@ -43,3 +43,4 @@ local function Kick(Title: string, Message: string)
 end;
 
 -- Kick("Custom Title", "Custom kick message");
+return Kick;
