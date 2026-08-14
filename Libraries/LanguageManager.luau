@@ -98,9 +98,9 @@ end;
     Returns true if the download succeeded and the file is
     properly JSON-encoded. Returns false if otherwise.
 --]]
-function LanguageManager:DownloadLanguage(Language: string, FileName: string): boolean
+function LanguageManager:DownloadLanguage(Language: string, Overwrite: boolean): boolean
     -- Pre-download checks
-    if (IsLanguageDownloaded(FileName)) then return true; end;
+    if (IsLanguageDownloaded(Language) and not Overwrite) then return true; end;
     if (LanguageManager.RepositoryURL == "") then return false; end;
 
     local DownloadedLanguageFile = game:HttpGet(string.format("%s%s.json", LanguageManager.RepositoryURL, 
@@ -113,7 +113,7 @@ function LanguageManager:DownloadLanguage(Language: string, FileName: string): b
 
     if (DecodeSuccess) then
         writefile(string.format("%s%s.json", LanguageManager.WorkspaceFolder,
-            FileName), DownloadedLanguageFile);
+            Language), DownloadedLanguageFile);
         return true;
     else
         return false;
@@ -124,9 +124,9 @@ end;
     Will attempt to download all of the languages in the
     passed-in table to the workspace folder.
 --]]
-function LanguageManager:DownloadLanguages(Languages: {string})
+function LanguageManager:DownloadLanguages(Languages: {string}, OverwriteAll: boolean)
     for Index, Language in pairs(Languages) do
-        LanguageManager:DownloadLanguage(Language, Language);
+        LanguageManager:DownloadLanguage(Language, OverwriteAll);
     end;
 end;
 
