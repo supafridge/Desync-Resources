@@ -24,8 +24,8 @@ local LanguageManager = {
     CurrentFallbackLanguage = "",
 
     -- JSON-decoded versions of the current languages
-    CurrentLanguageDecoded = nil,
-    CurrentFallbackLanguageDecoded = nil
+    CurrentLanguageDecoded = {},
+    CurrentFallbackLanguageDecoded = {}
 };
 
 -- Helper function to make checking for languages less repetitive
