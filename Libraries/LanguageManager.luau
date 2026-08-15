@@ -4,7 +4,7 @@
 
     License: GNU Lesser General Public Version 2.1
     Copyright (c) 2026 fridge
-    All rights reserved.
+    All rights reserved.    
 --]]
 
 -- // Services \\ --
@@ -197,7 +197,7 @@ end;
 --]]
 function LanguageManager:DownloadLanguage(Language: string, Overwrite: boolean): boolean
     -- Pre-download checks
-    if (IsLanguageDownloaded(LanguageManager:SanitizeStringForFileName(Language)) and not Overwrite) then return false; end;
+    if (IsLanguageDownloaded(Language) and not Overwrite) then return false; end;
     if (LanguageManager:GetLanguageRepositoryURL() == "") then return false; end;
 
     local DownloadedLanguageFile = game:HttpGet(string.format("%s%s.json",
