@@ -1,4 +1,4 @@
 {
-  "test.hello.world": "Hello, world!",
-  "test.goodbye.world": "Goodbye, world!"
+  "interface.disconnect.title": "Desync | Fatal Error",
+  "interface.disconnect.message": "Desync ran into a fatal error and kicked you to prevent a ban. Join the Discord server at https://desync.club/discord and make a support ticket with the following information:\n\n%s"
 }
