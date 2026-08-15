@@ -1,4 +1,4 @@
 {
   "interface.disconnect.title": "Desync | Fatal Error",
-  "interface.disconnect.message": "Desync ran into a fatal error and kicked you to prevent a ban. Join the Discord server at https://desync.club/discord and make a support ticket with the following information:\n\n%s"
+  "interface.disconnect.message": "Desync ran into a fatal error and kicked you to prevent a ban. You may re-join.\n\nIf this keeps happening, join the Discord server at https://desync.club/discord and make a support ticket. Provide all your log files in the Desync/Logs folder and the error below:\n\n%s"
 }
