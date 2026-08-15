@@ -84,7 +84,7 @@ end;
     Returns a sanitized version of a string that is
     able to be used with file functions.
 --]]
-function LanguageManager:SanitizeStringForFileName(Name: string): string?
+function LanguageManager:SanitizeStringForFileName(Name: string): string
     -- Removes any whitespace in the name as well as
     -- bad characters that don't work in file names.
     if (LanguageManager.SanitizeFilesystemStrings) then
@@ -98,7 +98,7 @@ end;
     Returns a sanitized version of a string that is
     able to be used with folder functions.
 --]]
-function LanguageManager:SanitizeStringForFolderPath(Path: string): string?
+function LanguageManager:SanitizeStringForFolderPath(Path: string): string
     if (LanguageManager.SanitizeFilesystemStrings) then
         -- Turn back slashes into forward slashes
         Path = Path:gsub("\\", "/");
