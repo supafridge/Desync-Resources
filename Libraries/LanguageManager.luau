@@ -292,14 +292,14 @@ function LanguageManager:GetKeyFormatted(Key: string, ...: any): string
 
     -- Check if we need to fallback first
     if (LanguageManager.CurrentLanguage.Decoded[Key] == nil) then
-        if (LanguageManager.CurrentFallbackLanguage[Key] == nil) then
+        if (LanguageManager.CurrentFallbackLanguage.Decoded[Key] == nil) then
             return Key;
         else
-            return string.format(LanguageManager.CurrentFallbackLanguage[Key], ...);
+            return string.format(LanguageManager.CurrentFallbackLanguage.Decoded[Key], ...);
         end;
     end;
 
-    return string.format(LanguageManager.CurrentLanguage[Key], ...);
+    return string.format(LanguageManager.CurrentLanguage.Decoded[Key], ...);
 end;
 
 --[[
