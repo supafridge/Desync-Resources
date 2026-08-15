@@ -50,7 +50,7 @@ end;
 local function IsLanguageDownloaded(Language: string): boolean
     local CheckSuccess = pcall(isfile, string.format("%s%s.json",
         LanguageManager:SanitizeStringForFolderPath(LanguageManager.LanguageFolder),
-        LanguageManager:SanitizeStringForFileName(FileName)));
+        LanguageManager:SanitizeStringForFileName(Language)));
     if (CheckSuccess) then return true; else return false; end;
 end;
 
@@ -197,7 +197,7 @@ end;
 --]]
 function LanguageManager:DownloadLanguage(Language: string, Overwrite: boolean): boolean
     -- Pre-download checks
-    if (IsLanguageDownloaded(Language) and not Overwrite) then return false; end;
+    if (IsLanguageDownloaded(LanguageManager:SanitizeStringForFileName(Language)) and not Overwrite) then return false; end;
     if (LanguageManager:GetLanguageRepositoryURL() == "") then return false; end;
 
     local DownloadedLanguageFile = game:HttpGet(string.format("%s%s.json",
