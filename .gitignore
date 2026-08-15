@@ -1,0 +1,6 @@
+# Windows stuff
+Thumbs.db
+*.DS_Store
+
+# Yes, I work on Desync from the resources repository. Deal with it.
+Desync.luau
