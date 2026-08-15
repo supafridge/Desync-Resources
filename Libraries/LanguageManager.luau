@@ -29,23 +29,49 @@ local LanguageManager = {
 };
 
 -- Helper function to make checking for languages less repetitive
-local function IsLanguageDownloaded(Language: string): boolean
-    return isfile(string.format("%s%s.json", LanguageManager.WorkspaceFolder, Language));
+local function IsLanguageDownloaded(Language: string): (boolean, string?)
+    local CheckSuccess, Result = pcall(function()
+        return isfile(string.format("%s%s.json", LanguageManager.WorkspaceFolder, Language));
+    end);
+
+    if (CheckSuccess) then
+        return Result;
+    else
+        return false, "Failed to check if language was downloaded";
+    end;
 end;
 
 -- Another helper function to make setting languages easier
-local function UpdateCurrentLanguage(Language: string, IsFallback: boolean)
+local function UpdateCurrentLanguage(Language: string, IsFallback: boolean): (boolean, string?)
     -- Check if the language to update to even exists
-    if (not IsLanguageDownloaded(Language)) then return; end;
+    if (not IsLanguageDownloaded(Language)) then 
+        return false, string.format("Failed to update language: Language %s is not downloaded yet!", Language);
+    end;
 
     if (not IsFallback) then
-        LanguageManager.CurrentLanguage = Language;
-        LanguageManager.CurrentLanguageDecoded = HttpService:JSONDecode(
-            readfile(string.format("%s%s.json", LanguageManager.WorkspaceFolder, Language)));
+        local ReadSuccess = pcall(function()
+            LanguageManager.CurrentLanguage = Language;
+            LanguageManager.CurrentLanguageDecoded = HttpService:JSONDecode(
+                readfile(string.format("%s%s.json", LanguageManager.WorkspaceFolder, Language)));
+        end);
+
+        if (ReadSuccess) then
+            return true;
+        else
+            return false, "Failed to read language file";
+        end;
     else
-        LanguageManager.CurrentFallbackLanguage = Language;
-        LanguageManager.CurrentFallbackLanguageDecoded = HttpService:JSONDecode(
-            readfile(string.format("%s%s.json", LanguageManager.WorkspaceFolder, Language)));
+        local ReadSuccess = pcall(function()
+            LanguageManager.CurrentFallbackLanguage = Language;
+            LanguageManager.CurrentFallbackLanguageDecoded = HttpService:JSONDecode(
+                readfile(string.format("%s%s.json", LanguageManager.WorkspaceFolder, Language)));
+        end);
+
+        if (ReadSuccess) then
+            return true;
+        else
+            return false, "Failed to read language file";
+        end;
     end;
 end;
 
@@ -98,7 +124,7 @@ end;
     Returns true if the download succeeded and the file is
     properly JSON-encoded. Returns false if otherwise.
 --]]
-function LanguageManager:DownloadLanguage(Language: string, Overwrite: boolean): boolean
+function LanguageManager:DownloadLanguage(Language: string, Overwrite: boolean): (boolean, string?)
     -- Pre-download checks
     if (IsLanguageDownloaded(Language) and not Overwrite) then return true; end;
     if (LanguageManager.RepositoryURL == "") then return false; end;
@@ -112,11 +138,18 @@ function LanguageManager:DownloadLanguage(Language: string, Overwrite: boolean):
     end);
 
     if (DecodeSuccess) then
-        writefile(string.format("%s%s.json", LanguageManager.WorkspaceFolder,
-            Language), DownloadedLanguageFile);
-        return true;
+        local WriteSuccess = pcall(function()
+            writefile(string.format("%s%s.json", LanguageManager.WorkspaceFolder,
+                Language), DownloadedLanguageFile);
+        end);
+        
+        if (WriteSuccess) then
+            return true;
+        else
+            return false, "Failed to write language file";
+        end;
     else
-        return false;
+        return false, "Failed to decoded language file";
     end;
 end;
 
@@ -134,7 +167,7 @@ end;
     Checks whether or not the specified language file
     is currently on the device.
 --]]
-function LanguageManager:IsLanguageDownloaded(Language: string): boolean
+function LanguageManager:IsLanguageDownloaded(Language: string): (boolean, string?)
     return IsLanguageDownloaded(Language);
 end;
 
@@ -142,8 +175,8 @@ end;
     Sets the new language to get strings from and
     decodes the new language file.
 --]]
-function LanguageManager:SetLanguage(Language: string)
-    UpdateCurrentLanguage(Language, false);
+function LanguageManager:SetLanguage(Language: string): (boolean, string?)
+    return UpdateCurrentLanguage(Language, false);
 end;
 
 --[[
@@ -157,8 +190,8 @@ end;
     Sets the new language to fallback to in case a
     string doesn't exist.
 --]]
-function LanguageManager:SetFallbackLanguage(Language: string)
-    UpdateCurrentLanguage(Language, true);
+function LanguageManager:SetFallbackLanguage(Language: string): (boolean, string?)
+    return UpdateCurrentLanguage(Language, true);
 end;
 
 --[[
