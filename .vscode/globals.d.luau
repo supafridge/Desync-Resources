@@ -25,6 +25,8 @@ declare function queue_on_teleport()
 declare function clearteleportqueue()
 declare function clear_teleport_queue()
 declare function clearqueueonteleport()
+declare function getcustomasset(): string
+declare function getgenv(): {}
 
 declare function isfolder(Path: string): boolean
 declare function isfile(Path: string): boolean
