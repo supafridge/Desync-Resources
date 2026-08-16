@@ -1,7 +1,6 @@
 # Desync Resources
 Resources for the Desync Roblox script for BloxStrike:
 - Language files
-- Obsidian addons
 - Assets (ex: images)
 - Extra libraries
 
